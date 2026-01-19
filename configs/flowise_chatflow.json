@@ -1,0 +1,949 @@
+{
+  "nodes": [
+    {
+      "id": "chatGoogleGenerativeAI_0",
+      "position": {
+        "x": 369.985735171293,
+        "y": 174.52972425444966
+      },
+      "type": "customNode",
+      "data": {
+        "id": "chatGoogleGenerativeAI_0",
+        "label": "ChatGoogleGenerativeAI",
+        "version": 3.1,
+        "name": "chatGoogleGenerativeAI",
+        "type": "ChatGoogleGenerativeAI",
+        "baseClasses": [
+          "ChatGoogleGenerativeAI",
+          "LangchainChatGoogleGenerativeAI",
+          "BaseChatModel",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "Chat Models",
+        "description": "Wrapper around Google Gemini large language models that use the Chat endpoint",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "googleGenerativeAI"
+            ],
+            "optional": false,
+            "description": "Google Generative AI credential.",
+            "id": "chatGoogleGenerativeAI_0-input-credential-credential",
+            "display": true
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "default": "gemini-1.5-flash-latest",
+            "id": "chatGoogleGenerativeAI_0-input-modelName-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Custom Model Name",
+            "name": "customModelName",
+            "type": "string",
+            "placeholder": "gemini-1.5-pro-exp-0801",
+            "description": "Custom model name to use. If provided, it will override the model selected",
+            "additionalParams": true,
+            "optional": true,
+            "id": "chatGoogleGenerativeAI_0-input-customModelName-string",
+            "display": true
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "chatGoogleGenerativeAI_0-input-temperature-number",
+            "display": true
+          },
+          {
+            "label": "Streaming",
+            "name": "streaming",
+            "type": "boolean",
+            "default": true,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-streaming-boolean",
+            "display": true
+          },
+          {
+            "label": "Max Output Tokens",
+            "name": "maxOutputTokens",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-maxOutputTokens-number",
+            "display": true
+          },
+          {
+            "label": "Top Probability",
+            "name": "topP",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-topP-number",
+            "display": true
+          },
+          {
+            "label": "Top Next Highest Probability Tokens",
+            "name": "topK",
+            "type": "number",
+            "description": "Decode using top-k sampling: consider the set of top_k most probable tokens. Must be positive",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-topK-number",
+            "display": true
+          },
+          {
+            "label": "Safety Settings",
+            "name": "safetySettings",
+            "type": "array",
+            "description": "Safety settings for the model. Refer to the <a href=\"https://ai.google.dev/gemini-api/docs/safety-settings\">official guide</a> on how to use Safety Settings",
+            "array": [
+              {
+                "label": "Harm Category",
+                "name": "harmCategory",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "Dangerous",
+                    "name": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "description": "Promotes, facilitates, or encourages harmful acts."
+                  },
+                  {
+                    "label": "Harassment",
+                    "name": "HARM_CATEGORY_HARASSMENT",
+                    "description": "Negative or harmful comments targeting identity and/or protected attributes."
+                  },
+                  {
+                    "label": "Hate Speech",
+                    "name": "HARM_CATEGORY_HATE_SPEECH",
+                    "description": "Content that is rude, disrespectful, or profane."
+                  },
+                  {
+                    "label": "Sexually Explicit",
+                    "name": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "description": "Contains references to sexual acts or other lewd content."
+                  },
+                  {
+                    "label": "Civic Integrity",
+                    "name": "HARM_CATEGORY_CIVIC_INTEGRITY",
+                    "description": "Election-related queries."
+                  }
+                ]
+              },
+              {
+                "label": "Harm Block Threshold",
+                "name": "harmBlockThreshold",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "None",
+                    "name": "BLOCK_NONE",
+                    "description": "Always show regardless of probability of unsafe content"
+                  },
+                  {
+                    "label": "Only High",
+                    "name": "BLOCK_ONLY_HIGH",
+                    "description": "Block when high probability of unsafe content"
+                  },
+                  {
+                    "label": "Medium and Above",
+                    "name": "BLOCK_MEDIUM_AND_ABOVE",
+                    "description": "Block when medium or high probability of unsafe content"
+                  },
+                  {
+                    "label": "Low and Above",
+                    "name": "BLOCK_LOW_AND_ABOVE",
+                    "description": "Block when low, medium or high probability of unsafe content"
+                  },
+                  {
+                    "label": "Threshold Unspecified (Default Threshold)",
+                    "name": "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                    "description": "Threshold is unspecified, block using default threshold"
+                  }
+                ]
+              }
+            ],
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-safetySettings-array",
+            "display": true
+          },
+          {
+            "label": "Base URL",
+            "name": "baseUrl",
+            "type": "string",
+            "description": "Base URL for the API. Leave empty to use the default.",
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatGoogleGenerativeAI_0-input-baseUrl-string",
+            "display": true
+          },
+          {
+            "label": "Allow Image Uploads",
+            "name": "allowImageUploads",
+            "type": "boolean",
+            "description": "Allow image input. Refer to the <a href=\"https://docs.flowiseai.com/using-flowise/uploads#image\" target=\"_blank\">docs</a> for more details.",
+            "default": false,
+            "optional": true,
+            "id": "chatGoogleGenerativeAI_0-input-allowImageUploads-boolean",
+            "display": true
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "chatGoogleGenerativeAI_0-input-cache-BaseCache",
+            "display": true
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "modelName": "gemini-2.0-flash",
+          "customModelName": "",
+          "temperature": 0.9,
+          "streaming": true,
+          "maxOutputTokens": "",
+          "topP": "",
+          "topK": "",
+          "safetySettings": "",
+          "baseUrl": "",
+          "allowImageUploads": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "chatGoogleGenerativeAI_0-output-chatGoogleGenerativeAI-ChatGoogleGenerativeAI|LangchainChatGoogleGenerativeAI|BaseChatModel|BaseLanguageModel|Runnable",
+            "name": "chatGoogleGenerativeAI",
+            "label": "ChatGoogleGenerativeAI",
+            "description": "Wrapper around Google Gemini large language models that use the Chat endpoint",
+            "type": "ChatGoogleGenerativeAI | LangchainChatGoogleGenerativeAI | BaseChatModel | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 677,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 369.985735171293,
+        "y": 174.52972425444966
+      }
+    },
+    {
+      "id": "toolAgent_0",
+      "position": {
+        "x": 819.2721475671799,
+        "y": 860.2324350989555
+      },
+      "type": "customNode",
+      "data": {
+        "id": "toolAgent_0",
+        "label": "Tool Agent",
+        "version": 2,
+        "name": "toolAgent",
+        "type": "AgentExecutor",
+        "baseClasses": [
+          "AgentExecutor",
+          "BaseChain",
+          "Runnable"
+        ],
+        "category": "Agents",
+        "description": "Agent that uses Function Calling to pick the tools and args to call",
+        "inputParams": [
+          {
+            "label": "System Message",
+            "name": "systemMessage",
+            "type": "string",
+            "default": "You are a helpful AI assistant.",
+            "description": "If Chat Prompt Template is provided, this will be ignored",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "toolAgent_0-input-systemMessage-string",
+            "display": true
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "toolAgent_0-input-maxIterations-number",
+            "display": true
+          },
+          {
+            "label": "Enable Detailed Streaming",
+            "name": "enableDetailedStreaming",
+            "type": "boolean",
+            "default": false,
+            "description": "Stream detailed intermediate steps during agent execution",
+            "optional": true,
+            "additionalParams": true,
+            "id": "toolAgent_0-input-enableDetailedStreaming-boolean",
+            "display": true
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "id": "toolAgent_0-input-tools-Tool",
+            "display": true
+          },
+          {
+            "label": "Memory",
+            "name": "memory",
+            "type": "BaseChatMemory",
+            "id": "toolAgent_0-input-memory-BaseChatMemory",
+            "display": true
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat",
+            "id": "toolAgent_0-input-model-BaseChatModel",
+            "display": true
+          },
+          {
+            "label": "Chat Prompt Template",
+            "name": "chatPromptTemplate",
+            "type": "ChatPromptTemplate",
+            "description": "Override existing prompt with Chat Prompt Template. Human Message must includes {input} variable",
+            "optional": true,
+            "id": "toolAgent_0-input-chatPromptTemplate-ChatPromptTemplate",
+            "display": true
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "toolAgent_0-input-inputModeration-Moderation",
+            "display": true
+          }
+        ],
+        "inputs": {
+          "tools": [
+            "{{retrieverTool_0.data.instance}}",
+            "{{retrieverTool_1.data.instance}}"
+          ],
+          "memory": "{{bufferMemory_0.data.instance}}",
+          "model": "{{chatGoogleGenerativeAI_0.data.instance}}",
+          "chatPromptTemplate": "",
+          "systemMessage": "You are a cybersecurity expert and IoT systems architect specializing in IoT rule automation for trigger-action platforms.\n═══════════════════════════════════════════════════════════════\nPRIMARY GOAL:\n═══════════════════════════════════════════════════════════════\nWhen a user gives you a natural language rule description:\n\nUse your tools to find relevant device capabilities\nCHECK FOR CONFLICTS with existing rules (CRITICAL!)\nGenerate a valid JSON trigger-action rule for IoT automation\nSAVE the rule using save_generated_rule tool (AFTER user confirms)\n\n═══════════════════════════════════════════════════════════════\nAVAILABLE TOOLS:\n═══════════════════════════════════════════════════════════════\n\nsmartthings_capabilities\n\nSearch SmartThings device capabilities, attributes, and commands\nUse to find correct technical specifications\n\n\nrule_conflict_checker\n\nSearch existing automation rules to detect conflicts\nUse BEFORE finalizing any rule\nPerform 5+ searches per rule with different keywords\n\n\n═══════════════════════════════════════════════════════════════\nWORKFLOW (FOLLOW EXACTLY):\n═══════════════════════════════════════════════════════════════\nSTEP 1: FIND CAPABILITIES\n\nUse smartthings_capabilities to get device specs\nIdentify: capability name, attributes, commands, component\n\nSTEP 2: CHECK FOR CONFLICTS (MANDATORY!)\nPerform MINIMUM 5 searches using rule_conflict_checker:\nSearch 1: \"[device_type]\" (e.g., \"light\", \"fan\", \"thermostat\")\nSearch 2: \"[capability]\" (e.g., \"switch\", \"motionSensor\")\nSearch 3: \"[device] [time]\" if time-based (e.g., \"light 21:00\")\nSearch 4: \"[device] [time±5min]\" (e.g., \"light 20:55\", \"light 21:05\")\nSearch 5: \"[device] [trigger/action]\" (e.g., \"light motion\", \"fan off\")\nSTEP 3: EVALUATE CONFLICTS\n✗ TYPE 1: DIRECT CONTRADICTIONS\n\nSame trigger + opposite actions (ON vs OFF)\nSame time + same device + different states\nExample: Motion inactive → Fan ON vs Fan OFF\n\n✗ TYPE 2: TEMPORAL ILLOGICALITY\n\nOpposite actions < 5 minutes apart (lights/switches)\nOpposite actions < 15 minutes apart (HVAC)\nRedundant actions < 2 minutes apart\nExample: Lights ON 9:00 AM, Lights OFF 9:02 AM\nException: Overnight gaps (11:50 PM → 12:10 AM = OK)\n\n✗ TYPE 3: CONDITION OVERLAPS\n\nSame sensor + contradictory actions\nExample: Motion detected → Light ON vs Light OFF\nOverlapping thresholds\nExample: Temp > 75°F → AC ON vs Temp > 70°F → AC OFF\nNested time ranges\nExample: 6pm-10pm → ON vs 8pm-11pm → OFF (overlap 8-10pm)\n\nSTEP 4: RESPOND APPROPRIATELY\nIF CONFLICTS FOUND:\n⚠️ DO NOT generate JSON yet. Respond with:\n\"⚠️ CONFLICT DETECTED\nConflict Type: [Direct Contradiction | Temporal Illogicality | Condition Overlap]\nExisting Rule: [describe clearly]\nYour New Rule: [user's request]\nThe Problem: [explain the technical conflict in 1-2 sentences]\nImpact: [what would actually happen to devices]\nResolution Options:\n\n[specific solution with details]\n[specific solution with details]\n[specific solution with details]\n\nHow would you like to proceed?\"\nIF NO CONFLICTS:\n✅ Generate and show the JSON rule to the user\n\n═══════════════════════════════════════════════════════════════\nJSON FORMAT EXAMPLES \n═══════════════════════════════════════════════════════════════\n\nExample 1: Time-based Trigger  \n{{\n  \"name\": \"Turn on the porch light every day at 5:15 PM\",\n  \"actions\": [\n    {{\n      \"if\": {{\n        \"time\": {{\n          \"at\": \"17:15\",\n          \"daysOfWeek\": [\"Sun\", \"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\"]\n        }}\n      }},\n      \"then\": [\n        {{\n          \"command\": {{\n            \"devices\": [\"{{DEVICE_UUID}}\"],\n            \"commands\": [\n              {{\n                \"component\": \"main\",\n                \"capability\": \"switch\",\n                \"command\": \"on\"\n              }}\n            ]\n          }}\n        }}\n      ]\n    }}\n  ]\n}}\n\nExample 2: Device State Trigger (Motion Sensor)  \n{{\n  \"name\": \"Turn off the living room fan when motion is no longer detected\",\n  \"actions\": [\n    {{\n      \"if\": {{\n        \"equals\": {{\n          \"left\": {{\n            \"device\": {{\n              \"devices\": [\"{{DEVICE_UUID}}\"],\n              \"component\": \"main\",\n              \"capability\": \"motionSensor\",\n              \"attribute\": \"motion\"\n            }}\n          }},\n          \"right\": {{\n            \"string\": \"inactive\"\n          }}\n        }}\n      }},\n      \"then\": [\n        {{\n          \"command\": {{\n            \"devices\": [\"{{DEVICE_UUID}}\"],\n            \"commands\": [\n              {{\n                \"component\": \"main\",\n                \"capability\": \"switch\",\n                \"command\": \"off\"\n              }}\n            ]\n          }}\n        }}\n      ],\n      \"else\": []\n    }}\n  ]\n}}\n\nExample 3: Device State Trigger (Presence Sensor)  \n{{\n  \"name\": \"If presence is not detected, location mode changes to away\",\n  \"actions\": [\n    {{\n      \"if\": {{\n        \"equals\": {{\n          \"left\": {{\n            \"device\": {{\n              \"devices\": [\"{{DEVICE_UUID}}\"],\n              \"component\": \"main\",\n              \"capability\": \"presenceSensor\",\n              \"attribute\": \"presence\"\n            }}\n          }},\n          \"right\": {{\n            \"string\": \"not present\"\n          }}\n        }}\n      }},\n      \"then\": [\n        {{\n          \"location\": {{\n            \"mode\": \"{{MODE_UUID}}\"\n          }}\n        }}\n      ],\n      \"else\": []\n    }}\n  ]\n}}\n\n═══════════════════════════════════════════════════════════════\nOUTPUT REQUIREMENTS:\n═══════════════════════════════════════════════════════════════\n\nWhen NO conflicts exist:\n- Show ONLY the JSON rule \n\nWhen conflicts ARE detected:\n- Explain the conflict clearly with specific details\n- Explain why it’s problematic in real-world terms\n- Provide 2–3 concrete solutions\n- Ask how to proceed\n- DO NOT output JSON or save until conflict is resolved\n\n═══════════════════════════════════════════════════════════════\nCONFLICT DETECTION EXAMPLES:\n═══════════════════════════════════════════════════════════════\nExample 1: Direct Contradiction\nUser: \"Turn ON fan when motion inactive\"\nExisting: \"Turn OFF fan when motion inactive\"\nResponse:\n\"⚠️ CONFLICT DETECTED\nConflict Type: Direct Contradiction\nExisting Rule: Turn off the living room fan when motion is no longer detected\nYour New Rule: Turn on fan when motion inactive\nThe Problem: Both rules trigger on the same condition (motion inactive) but perform opposite actions (ON vs OFF).\nReal-World Impact: When motion stops, the system won't know whether to turn the fan ON or OFF, creating unpredictable behavior.\nResolution Options:\n\nAdd time restriction: Turn ON fan only between 6am–10pm when motion inactive\nAdd mode condition: Turn ON fan only in 'Home' mode, keep OFF rule for 'Away' mode\nReplace existing rule: Remove the OFF rule and keep only your new ON rule\n\nHow would you like to proceed?\"\nExample 2: Temporal Illogicality\nUser: \"Turn OFF lights at 9:02 AM\"\nExisting: \"Turn ON lights at 9:00 AM\"\nResponse:\n\"⚠️ CONFLICT DETECTED\nConflict Type: Temporal Illogicality\nExisting Rule: Turn on lights at 9:00 AM\nYour New Rule: Turn off lights at 9:02 AM\nThe Problem: Rules are only 2 minutes apart with opposite actions, creating a pointless rapid cycle.\nReal-World Impact: The lights would turn ON at 9:00am and immediately turn OFF at 9:02am, wasting energy and potentially damaging the switch.\nResolution Options:\n\nExtend timing: Change to turn OFF lights at a later time (e.g., 6:00 PM or sunset)\nRemove existing rule: Delete the 9:00 AM ON rule if not needed\nUse sensor trigger: Replace with 'turn off when motion inactive' for automatic control\n\nHow would you like to proceed?\"\nExample 3: Condition Overlap\nUser: \"Turn ON AC when temp > 72°F\"\nExisting: \"Turn OFF AC when temp > 75°F\"\nResponse:\n\"⚠️ CONFLICT DETECTED\nConflict Type: Condition Overlap\nExisting Rule: Turn off AC when temperature exceeds 75°F\nYour New Rule: Turn on AC when temperature exceeds 72°F\nThe Problem: Overlapping temperature thresholds create ambiguity. When temp is 76°F, both conditions are true (> 72 and > 75) but with opposite actions.\nReal-World Impact: AC would turn ON at 73°F, then immediately turn OFF at 76°F, then potentially toggle repeatedly as temperature fluctuates, causing rapid cycling and equipment damage.\nResolution Options:\n\nUse temperature ranges: Turn ON when < 72°F, turn OFF when > 75°F (creates 72-75°F deadband)\nSingle thermostat rule: Set target temperature to 72°F and let SmartThings manage on/off automatically\nReverse the logic: Turn ON when temp > 75°F, OFF when temp < 72°F (cooling mode)\n\nHow would you like to proceed?\"\n═══════════════════════════════════════════════════════════════\nCRITICAL REMINDERS:\n═══════════════════════════════════════════════════════════════\n✓ ALWAYS perform 5+ searches using rule_conflict_checker before generating JSON\n✓ Check temporal conflicts: < 5min for lights, < 15min for HVAC\n✓ Check overlapping conditions: same triggers with different outcomes\n✓ Use device capabilities from smartthings_capabilities tool\n✓ When conflicts exist, provide clear explanations with 3 specific solutions\n✓ After saving, remind user to re-upsert rules to Pinecone\n",
+          "inputModeration": "",
+          "maxIterations": "",
+          "enableDetailedStreaming": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "toolAgent_0-output-toolAgent-AgentExecutor|BaseChain|Runnable",
+            "name": "toolAgent",
+            "label": "AgentExecutor",
+            "description": "Agent that uses Function Calling to pick the tools and args to call",
+            "type": "AgentExecutor | BaseChain | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 493,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 819.2721475671799,
+        "y": 860.2324350989555
+      },
+      "dragging": false
+    },
+    {
+      "id": "retrieverTool_0",
+      "position": {
+        "x": -174.20976771644482,
+        "y": 1042.3163584146616
+      },
+      "type": "customNode",
+      "data": {
+        "id": "retrieverTool_0",
+        "label": "Retriever Tool",
+        "version": 3,
+        "name": "retrieverTool",
+        "type": "RetrieverTool",
+        "baseClasses": [
+          "RetrieverTool",
+          "DynamicTool",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Use a retriever as allowed tool for agent",
+        "inputParams": [
+          {
+            "label": "Retriever Name",
+            "name": "name",
+            "type": "string",
+            "placeholder": "search_state_of_union",
+            "id": "retrieverTool_0-input-name-string",
+            "display": true
+          },
+          {
+            "label": "Retriever Description",
+            "name": "description",
+            "type": "string",
+            "description": "When should agent uses to retrieve documents",
+            "rows": 3,
+            "placeholder": "Searches and returns documents regarding the state-of-the-union.",
+            "id": "retrieverTool_0-input-description-string",
+            "display": true
+          },
+          {
+            "label": "Return Source Documents",
+            "name": "returnSourceDocuments",
+            "type": "boolean",
+            "optional": true,
+            "id": "retrieverTool_0-input-returnSourceDocuments-boolean",
+            "display": true
+          },
+          {
+            "label": "Additional Metadata Filter",
+            "name": "retrieverToolMetadataFilter",
+            "type": "json",
+            "description": "Add additional metadata filter on top of the existing filter from vector store",
+            "optional": true,
+            "additionalParams": true,
+            "hint": {
+              "label": "What can you filter?",
+              "value": "Add additional filters to vector store. You can also filter with flow config, including the current \"state\":\n- `$flow.sessionId`\n- `$flow.chatId`\n- `$flow.chatflowId`\n- `$flow.input`\n- `$flow.state`\n"
+            },
+            "acceptVariable": true,
+            "id": "retrieverTool_0-input-retrieverToolMetadataFilter-json",
+            "display": true
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Retriever",
+            "name": "retriever",
+            "type": "BaseRetriever",
+            "id": "retrieverTool_0-input-retriever-BaseRetriever",
+            "display": true
+          }
+        ],
+        "inputs": {
+          "name": "smartthings_capabilities",
+          "description": "Used to find information about SmartThings device capabilities, attributes, and commands. Use this to understand what a specific IoT device can do.",
+          "retriever": "{{documentStoreVS_0.data.instance}}",
+          "returnSourceDocuments": "",
+          "retrieverToolMetadataFilter": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+            "name": "retrieverTool",
+            "label": "RetrieverTool",
+            "description": "Use a retriever as allowed tool for agent",
+            "type": "RetrieverTool | DynamicTool | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 662,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": -174.20976771644482,
+        "y": 1042.3163584146616
+      }
+    },
+    {
+      "id": "documentStoreVS_0",
+      "position": {
+        "x": -631.4676446208689,
+        "y": 881.3859124987614
+      },
+      "type": "customNode",
+      "data": {
+        "id": "documentStoreVS_0",
+        "label": "Document Store (Vector)",
+        "version": 1,
+        "name": "documentStoreVS",
+        "type": "DocumentStoreVS",
+        "baseClasses": [
+          "DocumentStoreVS"
+        ],
+        "category": "Vector Stores",
+        "description": "Search and retrieve documents from Document Store",
+        "inputParams": [
+          {
+            "label": "Select Store",
+            "name": "selectedStore",
+            "type": "asyncOptions",
+            "loadMethod": "listStores",
+            "id": "documentStoreVS_0-input-selectedStore-asyncOptions",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "selectedStore": "bc57eed6-4ca2-4e7c-a586-396bc239627f"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "documentStoreVS_0-output-retriever-BaseRetriever",
+                "name": "retriever",
+                "label": "Retriever",
+                "description": "",
+                "type": "BaseRetriever"
+              },
+              {
+                "id": "documentStoreVS_0-output-vectorStore-VectorStore",
+                "name": "vectorStore",
+                "label": "Vector Store",
+                "description": "",
+                "type": "VectorStore"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 319,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -631.4676446208689,
+        "y": 881.3859124987614
+      },
+      "dragging": false
+    },
+    {
+      "id": "retrieverTool_1",
+      "position": {
+        "x": -90.38680514855236,
+        "y": 325.83897510157976
+      },
+      "type": "customNode",
+      "data": {
+        "id": "retrieverTool_1",
+        "label": "Retriever Tool",
+        "version": 3,
+        "name": "retrieverTool",
+        "type": "RetrieverTool",
+        "baseClasses": [
+          "RetrieverTool",
+          "DynamicTool",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Use a retriever as allowed tool for agent",
+        "inputParams": [
+          {
+            "label": "Retriever Name",
+            "name": "name",
+            "type": "string",
+            "placeholder": "search_state_of_union",
+            "id": "retrieverTool_1-input-name-string",
+            "display": true
+          },
+          {
+            "label": "Retriever Description",
+            "name": "description",
+            "type": "string",
+            "description": "When should agent uses to retrieve documents",
+            "rows": 3,
+            "placeholder": "Searches and returns documents regarding the state-of-the-union.",
+            "id": "retrieverTool_1-input-description-string",
+            "display": true
+          },
+          {
+            "label": "Return Source Documents",
+            "name": "returnSourceDocuments",
+            "type": "boolean",
+            "optional": true,
+            "id": "retrieverTool_1-input-returnSourceDocuments-boolean",
+            "display": true
+          },
+          {
+            "label": "Additional Metadata Filter",
+            "name": "retrieverToolMetadataFilter",
+            "type": "json",
+            "description": "Add additional metadata filter on top of the existing filter from vector store",
+            "optional": true,
+            "additionalParams": true,
+            "hint": {
+              "label": "What can you filter?",
+              "value": "Add additional filters to vector store. You can also filter with flow config, including the current \"state\":\n- `$flow.sessionId`\n- `$flow.chatId`\n- `$flow.chatflowId`\n- `$flow.input`\n- `$flow.state`\n"
+            },
+            "acceptVariable": true,
+            "id": "retrieverTool_1-input-retrieverToolMetadataFilter-json",
+            "display": true
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Retriever",
+            "name": "retriever",
+            "type": "BaseRetriever",
+            "id": "retrieverTool_1-input-retriever-BaseRetriever",
+            "display": true
+          }
+        ],
+        "inputs": {
+          "name": "rule_conflict_checker",
+          "description": "Search existing automation rules to detect conflicts with new rules. Use this to find rules with similar triggers, actions, devices, or capabilities before creating a new rule. Search using device type, capability name, trigger conditions, and action commands.",
+          "retriever": "{{documentStoreVS_1.data.instance}}",
+          "returnSourceDocuments": true,
+          "retrieverToolMetadataFilter": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "retrieverTool_1-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+            "name": "retrieverTool",
+            "label": "RetrieverTool",
+            "description": "Use a retriever as allowed tool for agent",
+            "type": "RetrieverTool | DynamicTool | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 662,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -90.38680514855236,
+        "y": 325.83897510157976
+      },
+      "dragging": false
+    },
+    {
+      "id": "documentStoreVS_1",
+      "position": {
+        "x": -553.10221170638,
+        "y": 169.7938780842689
+      },
+      "type": "customNode",
+      "data": {
+        "id": "documentStoreVS_1",
+        "label": "Document Store (Vector)",
+        "version": 1,
+        "name": "documentStoreVS",
+        "type": "DocumentStoreVS",
+        "baseClasses": [
+          "DocumentStoreVS"
+        ],
+        "category": "Vector Stores",
+        "description": "Search and retrieve documents from Document Store",
+        "inputParams": [
+          {
+            "label": "Select Store",
+            "name": "selectedStore",
+            "type": "asyncOptions",
+            "loadMethod": "listStores",
+            "id": "documentStoreVS_1-input-selectedStore-asyncOptions",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "selectedStore": "1fb05df5-4bc8-4d24-b326-6cff683eb5ae"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "documentStoreVS_1-output-retriever-BaseRetriever",
+                "name": "retriever",
+                "label": "Retriever",
+                "description": "",
+                "type": "BaseRetriever"
+              },
+              {
+                "id": "documentStoreVS_1-output-vectorStore-VectorStore",
+                "name": "vectorStore",
+                "label": "Vector Store",
+                "description": "",
+                "type": "VectorStore"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 319,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": -553.10221170638,
+        "y": 169.7938780842689
+      }
+    },
+    {
+      "id": "bufferMemory_0",
+      "position": {
+        "x": 337.5608822403457,
+        "y": 1636.8698368541018
+      },
+      "type": "customNode",
+      "data": {
+        "id": "bufferMemory_0",
+        "label": "Buffer Memory",
+        "version": 2,
+        "name": "bufferMemory",
+        "type": "BufferMemory",
+        "baseClasses": [
+          "BufferMemory",
+          "BaseChatMemory",
+          "BaseMemory"
+        ],
+        "category": "Memory",
+        "description": "Retrieve chat messages stored in database",
+        "inputParams": [
+          {
+            "label": "Session Id",
+            "name": "sessionId",
+            "type": "string",
+            "description": "If not specified, a random id will be used. Learn <a target=\"_blank\" href=\"https://docs.flowiseai.com/memory#ui-and-embedded-chat\">more</a>",
+            "default": "",
+            "additionalParams": true,
+            "optional": true,
+            "id": "bufferMemory_0-input-sessionId-string",
+            "display": true
+          },
+          {
+            "label": "Memory Key",
+            "name": "memoryKey",
+            "type": "string",
+            "default": "chat_history",
+            "additionalParams": true,
+            "id": "bufferMemory_0-input-memoryKey-string",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "sessionId": "",
+          "memoryKey": "chat_history"
+        },
+        "outputAnchors": [
+          {
+            "id": "bufferMemory_0-output-bufferMemory-BufferMemory|BaseChatMemory|BaseMemory",
+            "name": "bufferMemory",
+            "label": "BufferMemory",
+            "description": "Retrieve chat messages stored in database",
+            "type": "BufferMemory | BaseChatMemory | BaseMemory"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 259,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 337.5608822403457,
+        "y": 1636.8698368541018
+      },
+      "dragging": false
+    },
+    {
+      "id": "customTool_1",
+      "position": {
+        "x": 879.1691285892878,
+        "y": 1445.3980488510654
+      },
+      "type": "customNode",
+      "data": {
+        "id": "customTool_1",
+        "label": "Custom Tool (1)",
+        "version": 3,
+        "name": "customTool",
+        "type": "CustomTool",
+        "baseClasses": [
+          "CustomTool",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Use custom tool you've created in Flowise within chatflow",
+        "inputParams": [
+          {
+            "label": "Select Tool",
+            "name": "selectedTool",
+            "type": "asyncOptions",
+            "loadMethod": "listTools",
+            "id": "customTool_1-input-selectedTool-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Return Direct",
+            "name": "returnDirect",
+            "description": "Return the output of the tool directly to the user",
+            "type": "boolean",
+            "optional": true,
+            "id": "customTool_1-input-returnDirect-boolean",
+            "display": true
+          },
+          {
+            "label": "Custom Tool Name",
+            "name": "customToolName",
+            "type": "string",
+            "hidden": true,
+            "id": "customTool_1-input-customToolName-string",
+            "display": true
+          },
+          {
+            "label": "Custom Tool Description",
+            "name": "customToolDesc",
+            "type": "string",
+            "hidden": true,
+            "id": "customTool_1-input-customToolDesc-string",
+            "display": true
+          },
+          {
+            "label": "Custom Tool Schema",
+            "name": "customToolSchema",
+            "type": "string",
+            "hidden": true,
+            "id": "customTool_1-input-customToolSchema-string",
+            "display": true
+          },
+          {
+            "label": "Custom Tool Func",
+            "name": "customToolFunc",
+            "type": "string",
+            "hidden": true,
+            "id": "customTool_1-input-customToolFunc-string",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "selectedTool": "d3d64243-3ab4-4a4d-8bd1-136508818b6e",
+          "returnDirect": false,
+          "customToolName": "",
+          "customToolDesc": "",
+          "customToolSchema": "",
+          "customToolFunc": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "customTool_1-output-customTool-CustomTool|Tool|StructuredTool|Runnable",
+            "name": "customTool",
+            "label": "CustomTool",
+            "description": "Use custom tool you've created in Flowise within chatflow",
+            "type": "CustomTool | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 379,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 879.1691285892878,
+        "y": 1445.3980488510654
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "chatGoogleGenerativeAI_0",
+      "sourceHandle": "chatGoogleGenerativeAI_0-output-chatGoogleGenerativeAI-ChatGoogleGenerativeAI|LangchainChatGoogleGenerativeAI|BaseChatModel|BaseLanguageModel|Runnable",
+      "target": "toolAgent_0",
+      "targetHandle": "toolAgent_0-input-model-BaseChatModel",
+      "type": "buttonedge",
+      "id": "chatGoogleGenerativeAI_0-chatGoogleGenerativeAI_0-output-chatGoogleGenerativeAI-ChatGoogleGenerativeAI|LangchainChatGoogleGenerativeAI|BaseChatModel|BaseLanguageModel|Runnable-toolAgent_0-toolAgent_0-input-model-BaseChatModel"
+    },
+    {
+      "source": "retrieverTool_0",
+      "sourceHandle": "retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+      "target": "toolAgent_0",
+      "targetHandle": "toolAgent_0-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "retrieverTool_0-retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable-toolAgent_0-toolAgent_0-input-tools-Tool"
+    },
+    {
+      "source": "documentStoreVS_0",
+      "sourceHandle": "documentStoreVS_0-output-retriever-BaseRetriever",
+      "target": "retrieverTool_0",
+      "targetHandle": "retrieverTool_0-input-retriever-BaseRetriever",
+      "type": "buttonedge",
+      "id": "documentStoreVS_0-documentStoreVS_0-output-retriever-BaseRetriever-retrieverTool_0-retrieverTool_0-input-retriever-BaseRetriever"
+    },
+    {
+      "source": "retrieverTool_1",
+      "sourceHandle": "retrieverTool_1-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+      "target": "toolAgent_0",
+      "targetHandle": "toolAgent_0-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "retrieverTool_1-retrieverTool_1-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable-toolAgent_0-toolAgent_0-input-tools-Tool"
+    },
+    {
+      "source": "documentStoreVS_1",
+      "sourceHandle": "documentStoreVS_1-output-retriever-BaseRetriever",
+      "target": "retrieverTool_1",
+      "targetHandle": "retrieverTool_1-input-retriever-BaseRetriever",
+      "type": "buttonedge",
+      "id": "documentStoreVS_1-documentStoreVS_1-output-retriever-BaseRetriever-retrieverTool_1-retrieverTool_1-input-retriever-BaseRetriever"
+    },
+    {
+      "source": "bufferMemory_0",
+      "sourceHandle": "bufferMemory_0-output-bufferMemory-BufferMemory|BaseChatMemory|BaseMemory",
+      "target": "toolAgent_0",
+      "targetHandle": "toolAgent_0-input-memory-BaseChatMemory",
+      "type": "buttonedge",
+      "id": "bufferMemory_0-bufferMemory_0-output-bufferMemory-BufferMemory|BaseChatMemory|BaseMemory-toolAgent_0-toolAgent_0-input-memory-BaseChatMemory"
+    }
+  ]
+}
