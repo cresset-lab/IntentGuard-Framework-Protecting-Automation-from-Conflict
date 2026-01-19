@@ -12,6 +12,19 @@ This proof-of-concept demonstrates an AI-powered framework that:
 - Performs semantic conflict detection across automation rules
 - Provides explainable conflict resolution strategies
 
+## 🧠 System Architecture
+
+The IntentGuard framework follows an agentic, retrieval-augmented
+architecture that translates natural language requests into automation
+rules while proactively detecting semantic conflicts.
+
+![System Architecture Diagram](docs/architecture_diagram.png)
+
+The architecture corresponds directly to the repository structure:
+Flowise workflows and tools are provided in `configs/`, indexed knowledge
+and rule artifacts in `data/`, and evaluation scenarios in `evaluation/`.
+
+
 ## 📂 Repository Structure
 ```
 ├── configs/              # Flowise and tool configurations
