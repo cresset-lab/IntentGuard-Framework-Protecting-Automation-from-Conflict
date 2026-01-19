@@ -1,0 +1,152 @@
+=================================================================
+SETUP INSTRUCTIONS FOR CONFLICT-AWARE SMART HOME AUTOMATION
+=================================================================
+
+PREREQUISITES:
+--------------
+1. Flowise Account (https://flowiseai.com/)
+   - Cloud version works fine (as used in this project)
+
+2. API Keys:
+   - Google API key (for Gemini-2.0-Flash and text-embedding-004)
+   - Pinecone API key (free tier works)
+
+STEP-BY-STEP SETUP:
+-------------------
+
+
+Step 1: Import Flowise Workflow
+--------------------------------
+1. Log into Flowise
+2. Go to "Chatflows"
+3. Click "Add New"
+4. Import configs/Flowise_chatflow.json
+5. The workflow will load with all components
+
+Step 2: Configure API Keys in Flowise
+--------------------------------------
+1. Click on the ChatGoogleGenerativeAI node
+   - Connect your Google API credential
+   - Model should be: gemini-2.0-flash
+
+2. Click on each Document Store (Vector) node
+   - Connect your Pinecone credential
+   - Flowise will automatically connect to the "flowise" index
+
+Step 3: Create Document Stores
+-------------------------------
+In Flowise, you'll see two Document Stores:
+
+A) SmartThings Document Store:
+   - Name: "SmartThings"
+   - Source: data/smartthings_data.txt (295.7k chars)
+   - Splitter: Recursive Character Text Splitter
+   - Chunks: 306
+   - Namespace: smartthings-capabilities (auto-created)
+
+B) GeneratedRules Document Store:
+   - Name: "GeneratedRules"  
+   - Source: data/test_rules.json (479 chars)
+   - Splitter: Recursive Character Text Splitter
+   - Chunks: 39
+   - Namespace: generated-rules (auto-created)
+
+Step 4: Pinecone Setup
+---------------------------------
+1. Create a Pinecone account (free tier)
+2. Generate an API key
+3. Flowise will automatically:
+   - Create the index (named "flowise")
+   - Configure it with 768 dimensions and cosine metric
+   - Set it to serverless mode (AWS us-east-1)
+   - Create the two namespaces
+
+Step 5: Upsert Documents to Pinecone
+-------------------------------------
+For each Document Store:
+
+1. Click on the Document Store (e.g., "SmartThings")
+2. Click "Add Document Loader" button
+3. Upload the file:
+   - SmartThings store: upload smartthings_data.txt
+   - GeneratedRules store: upload test_rules.json
+4. Configure the Recursive Character Text Splitter:
+   - Chunk Size: 1000 
+   - Chunk Overlap: 200 
+5. Click "Upsert Document"
+6. Wait for green "UPSERTED" status
+
+You should see:
+- SmartThings: 306 chunks created
+- GeneratedRules: 39 chunks created
+
+Step 6: Verify Pinecone Index
+------------------------------
+In your Pinecone dashboard (optional verification):
+- Index name: "flowise"
+- Metric: cosine
+- Dimensions: 768
+- Cloud: AWS
+- Region: us-east-1
+- Type: Dense, On-demand (serverless)
+- Total records: 440 (306 + 134 from generated-rules namespace)
+
+Namespaces:
+1. smartthings-capabilities: 306 records
+2. generated-rules: 134 records
+
+Step 7: Test the System
+-----------------------
+1. Open your Flowise chatflow
+2. Use test cases from evaluation/test_cases.pdf
+3. Try baseline rules first (should generate JSON)
+4. Try conflicting rules (should detect conflicts)
+
+Example test:
+Input: "Turn off all lights at 11 PM every night"
+Expected: Valid JSON generated
+
+Then try:
+Input: "Turn on all lights at 11 PM every night"
+Expected: Conflict detected with explanation
+
+MANUAL WORKFLOW (Current Implementation):
+------------------------------------------
+After generating a new rule:
+
+1. Copy the generated JSON from chat output
+2. Manually add it to data/test_rules.json:
+3. Go back to "GeneratedRules" Document Store in Flowise
+4. Click "More Actions" → "Upsert Chunks"
+5. Wait for re-indexing to complete
+6. New rule is now searchable for conflict detection
+
+FLOWISE DOCUMENT STORE DETAILS:
+--------------------------------
+Based on your actual configuration:
+
+Store 1: SmartThings
+- Loader: smartthings_data
+- Splitter: Recursive Character Text Splitter  
+- Source: smartthings_data.txt
+- Chunks: 306
+- Chars: 295,736
+- Pinecone namespace: smartthings-capabilities
+
+Store 2: GeneratedRules
+- Loader: GeneratedRulesLoader
+- Splitter: Recursive Character Text Splitter
+- Source: test_rules.json  
+- Chunks: 39
+- Chars: 479
+- Pinecone namespace: generated-rules
+
+WORKFLOW CONFIGURATION:
+-----------------------
+Your chatflow includes:
+- Tool Agent (powered by Gemini-2.0-Flash)
+- 2 Retriever Tools:
+  * smartthings_capabilities
+  * rule_conflict_checker
+- Buffer Memory for conversation context
+- Custom Tool: save_generated_rule (attempted but not deployed)
