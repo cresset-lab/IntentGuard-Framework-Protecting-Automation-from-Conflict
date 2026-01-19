@@ -1,0 +1,126 @@
+=================================================================
+PINECONE VECTOR DATABASE CONFIGURATION
+=================================================================
+
+AUTOMATIC CONFIGURATION BY FLOWISE:
+------------------------------------
+The Pinecone index was automatically created and managed by Flowise.
+Users do not need to manually configure anything in Pinecone beyond
+generating an API key.
+
+INDEX DETAILS:
+--------------
+Index Name: flowise
+  (Automatically created by Flowise)
+
+Metric: cosine
+  (Optimal for semantic similarity in text embeddings)
+
+Dimensions: 768
+  (Matching Google's text-embedding-004 model output)
+
+Cloud Provider: AWS
+Region: us-east-1
+  (Default Flowise configuration)
+
+Type: Dense, On-demand (Serverless)
+  (Cost-effective for proof-of-concept)
+
+Total Records: 440
+  (306 capability chunks + 134 rule chunks)
+
+NAMESPACE STRUCTURE:
+--------------------
+Flowise automatically created two namespaces when you upserted
+the Document Stores:
+
+1. NAMESPACE: smartthings-capabilities
+   Records: 306
+   Purpose: Device capability retrieval
+   Source: smartthings_data.txt (295,736 characters)
+   
+   Document Types:
+   - Motion Sensor capability
+   - Switch capability  
+   - Temperature Measurement capability
+   - Lock capability
+   - Contact Sensor capability
+   - ... (134 total capabilities)
+
+2. NAMESPACE: generated-rules
+   Records: 134 (varies as rules are added)
+   Purpose: Conflict detection via semantic search
+   Source: test_rules.json (479 characters initially)
+   
+   Document Format: Each rule stored as:
+   - rule_id: "rule_001", "rule_002", etc.
+   - name: Natural language description
+   - created_at: ISO 8601 timestamp
+   - actions: SmartThings JSON structure
+
+CHUNKING STRATEGY:
+------------------
+Applied by Flowise's Recursive Character Text Splitter:
+- Chunk Size: 1000 characters (default)
+- Chunk Overlap: 200 characters (default)
+- Result: 306 chunks from capabilities, 39 chunks from rules
+
+Why chunking?
+- Enables retrieval of relevant subsections
+- Improves semantic search precision
+- Fits within LLM context windows
+
+SEARCH CONFIGURATION:
+---------------------
+Performed by Flowise Document Store retriever:
+- Top-K: 5 documents returned per search
+- Algorithm: Exhaustive (optimal for <10K vectors)
+- Metric: Cosine similarity
+
+Search Process:
+1. User query → embedded via text-embedding-004
+2. Cosine similarity search in target namespace  
+3. Top 5 most similar chunks returned
+4. LLM uses retrieved context to generate response
+
+EMBEDDING MODEL:
+----------------
+Model: text-embedding-004 (Google)
+Dimensions: 768
+Provider: Google Vertex AI
+
+Configured in Flowise:
+- Automatically applied to all document uploads
+- Same model used for both indexing and querying
+- Ensures consistent vector representations
+
+FLOWISE INTEGRATION:
+--------------------
+Document Store Type: Pinecone (Vector)
+Connection: Via Pinecone API key credential in Flowise
+Operations:
+- Upsert: Upload documents → chunk → embed → store
+- Query: Embed query → search → retrieve → return context
+
+NO MANUAL PINECONE WORK REQUIRED:
+----------------------------------
+Everything is managed through Flowise UI:
+✓ Index creation
+✓ Namespace creation  
+✓ Document chunking
+✓ Vector embedding
+✓ Upserting to Pinecone
+✓ Semantic search
+
+Users only need:
+1. Pinecone API key
+2. Flowise account
+3. Upload files via Document Store UI
+
+
+STORAGE BREAKDOWN:
+------------------
+Total vectors: 440
+- smartthings-capabilities: 306 vectors (~918 KB)
+- generated-rules: 134 vectors (~402 KB)
+- Total storage: ~1.32 MB (well within free tier)
